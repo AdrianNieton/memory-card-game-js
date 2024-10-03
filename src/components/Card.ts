@@ -5,10 +5,14 @@ export class Card {
 
     constructor(id: number, imageUrl: string) {
         this._imageUrl = imageUrl;
-        this._element = document.createElement('div');
-        this._element.className = 'card';
-        this._element.dataset.id = id.toString();
-        this._element.innerHTML = `
+        this._element = this.createElement(id);
+    }
+
+    private createElement(id: number): HTMLElement {
+        const element = document.createElement('div');
+        element.className = 'card';
+        element.dataset.id = id.toString();
+        element.innerHTML = `
             <div class="card-inner">
                 <div class="card-front">
                     <img src="/reverse-card.png" alt="card reverse">
@@ -18,6 +22,8 @@ export class Card {
                 </div>
             </div>
         `;
+
+        return element;
     }
 
     get element(): HTMLElement {
@@ -29,12 +35,20 @@ export class Card {
     }
 
     reveal(): void {
-        this._isRevealed = true;
-        this._element.classList.add('flipped');
+        if(!this._isRevealed) {
+            this._isRevealed = true;
+            this._element.classList.add('flipped');
+        }
     }
 
     hide(): void {
-        this._isRevealed = false;
-        this._element.classList.remove('flipped');
+        if(this._isRevealed) {
+            this._isRevealed = false;
+            this._element.classList.remove('flipped');
+        }
+    }
+
+    flip(): void {
+        this._isRevealed ? this.hide() : this.reveal();
     }
 }

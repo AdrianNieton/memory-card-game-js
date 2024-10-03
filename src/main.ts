@@ -1,4 +1,4 @@
-import { Game } from "./components/Game";
+import { Game } from "./game/Game";
 
 function main() {
   const gameContainer = document.getElementById('game-container');
