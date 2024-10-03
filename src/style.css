@@ -1,3 +1,10 @@
+body {
+  background-image: url('/pokemon-background.jpg');
+  background-size: auto;
+  background-position: center;
+  background-repeat: repeat;
+}
+
 #game-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Coloca tantas columnas como quepan, cada una de al menos 200px */
@@ -33,12 +40,12 @@ img {
 }
 
 .card-back img {
-  border: 1px solid;
+  border: 2px solid;
   border-radius: 15px;
   width: 198px;
   height: 268px;
   object-fit: contain;
-  background-color: antiquewhite;
+  background-color: turquoise;
 }
 
 .card.flipped .card-inner {
