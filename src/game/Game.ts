@@ -1,10 +1,12 @@
 import { Card } from "../components/Card";
+import { ScoreBoard } from "../components/ScoreBoard";
 import { BoardState } from "./BoardState";
 import { CardGenerator } from "./CardGenerator";
 
 export class Game {
     private readonly _cards: Card[]
     private readonly _boardState: BoardState;
+    private readonly _scoreBoard: ScoreBoard;
     private readonly _cardFlipHandlers : Map<Card, (event: Event) => void> = new Map();
     private readonly _gameContainerElement: HTMLElement;
     private readonly _pairCount: number;
@@ -12,6 +14,7 @@ export class Game {
     constructor(gameContainerElement: HTMLElement, pairCount: number) {
         this._cards = []
         this._boardState = new BoardState();
+        this._scoreBoard = new ScoreBoard();
         this._gameContainerElement = gameContainerElement;
         this._pairCount = pairCount;
     }
@@ -67,6 +70,7 @@ export class Game {
     private handleMatchedCards(): void {
         this.disableCards();
         this._boardState.incrementMatchedPairs();
+        this._scoreBoard.incrementScore();
         if(this._boardState.matchedPairs === this._pairCount) {
             //Game Completed
         }
