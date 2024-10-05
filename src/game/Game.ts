@@ -23,6 +23,7 @@ export class Game {
         this._pairCount = config.pairCount || DEFAULT_PAIR_COUNT;
         this.changeVisibility();
         this._scoreBoard.changeVisibility();
+        console.log(this._mode);
     }
 
     async initializeGame() {
