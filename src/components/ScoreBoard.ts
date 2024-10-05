@@ -1,15 +1,22 @@
 export class ScoreBoard {
     private _element: HTMLElement;
     private _score: number;
+    private _scoreContainer: HTMLElement | null;
+    private _isVisible: boolean = false;
 
     constructor() {
         this._score = 0;
         this._element = this.createElement();
-        const scoreContainer = document.getElementById('score-container');
-        scoreContainer?.appendChild(this._element);
+        this._scoreContainer = document.getElementById('score-container');
+        if(this._scoreContainer) {
+            this._scoreContainer.appendChild(this._element);
+        }
     }
 
     private createElement(): HTMLElement {
+        const scoreWarpper = document.createElement('div');
+        scoreWarpper.className = 'score-wrapper';
+        scoreWarpper.dataset.id = 'score-wrapper';
         const element = document.createElement('div');
         element.className = 'score-board';
         element.dataset.id = 'score';
@@ -18,7 +25,9 @@ export class ScoreBoard {
                 <p><b>Score: </b><span id="score-value">${this._score}</span></p>
             </div>
         `;
-        return element;
+
+        scoreWarpper.appendChild(element);
+        return scoreWarpper;
     }
 
     get element(): HTMLElement {
@@ -39,5 +48,23 @@ export class ScoreBoard {
         if(scoreElement) {
             scoreElement.textContent = this._score.toString();
         }
+    }
+
+    private hide() {
+        if(this._isVisible) {
+            this._isVisible = false;
+            this._scoreContainer!.style.display = 'None';
+        }
+    }
+
+    private show() {
+        if(!this._isVisible) {
+            this._isVisible = true;
+            this._scoreContainer!.style.display = 'block';
+        }
+    }
+
+    changeVisibility() {
+        this._isVisible ? this.hide() : this.show();
     }
 }

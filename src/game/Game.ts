@@ -1,4 +1,5 @@
 import { Card } from "../components/Card";
+import { DEFAULT_PAIR_COUNT, GameConfig, GameMode } from "../components/menu/GameMode";
 import { ScoreBoard } from "../components/ScoreBoard";
 import { BoardState } from "./BoardState";
 import { CardGenerator } from "./CardGenerator";
@@ -10,13 +11,18 @@ export class Game {
     private readonly _cardFlipHandlers : Map<Card, (event: Event) => void> = new Map();
     private readonly _gameContainerElement: HTMLElement;
     private readonly _pairCount: number;
+    private _mode: GameMode;
+    private _isVisible: boolean = true;
 
-    constructor(gameContainerElement: HTMLElement, pairCount: number) {
+    constructor(gameContainerElement: HTMLElement, config: GameConfig) {
+        this._gameContainerElement = gameContainerElement;
+        this._mode = config.mode;
         this._cards = []
         this._boardState = new BoardState();
         this._scoreBoard = new ScoreBoard();
-        this._gameContainerElement = gameContainerElement;
-        this._pairCount = pairCount;
+        this._pairCount = config.pairCount || DEFAULT_PAIR_COUNT;
+        this.changeVisibility();
+        this._scoreBoard.changeVisibility();
     }
 
     async initializeGame() {
@@ -97,5 +103,23 @@ export class Game {
 
     private resetBoard() {
         this._boardState.reset();
+    }
+
+    private hide() {
+        if(this._isVisible) {
+            this._isVisible = false;
+            this._gameContainerElement.style.display = 'None';
+        }
+    }
+
+    private show() {
+        if(!this._isVisible) {
+            this._isVisible = true;
+            this._gameContainerElement.style.display = 'grid';
+        }
+    }
+
+    changeVisibility() {
+        this._isVisible ? this.hide() : this.show();
     }
 }
