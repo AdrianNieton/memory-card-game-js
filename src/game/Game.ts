@@ -1,37 +1,74 @@
 import { Card } from "../components/Card";
+import { EndGameMenu } from "../components/menu/EndGameMenu";
 import { DEFAULT_PAIR_COUNT, GameConfig, GameMode } from "../components/menu/GameMode";
 import { ScoreBoard } from "../components/ScoreBoard";
 import { BoardState } from "./BoardState";
 import { CardGenerator } from "./CardGenerator";
+import { BaseGameMode } from "./modes/BaseGameMode";
+import { NormalModeStrategy } from "./modes/NormalModeStrategy";
 
 export class Game {
-    private readonly _cards: Card[]
+    private _cards: Card[]
     private readonly _boardState: BoardState;
     private readonly _scoreBoard: ScoreBoard;
     private readonly _cardFlipHandlers : Map<Card, (event: Event) => void> = new Map();
     private readonly _gameContainerElement: HTMLElement;
     private readonly _pairCount: number;
-    private _mode: GameMode;
+    private _configMode!: GameMode;
+    private _mode!: BaseGameMode;
+    private _endGameMenu: EndGameMenu;
     private _isVisible: boolean = true;
+    private _mainMenuCallback: () => void;
 
-    constructor(gameContainerElement: HTMLElement, config: GameConfig) {
+    constructor(gameContainerElement: HTMLElement, config: GameConfig, mainMenuCallback: () => void) {
         this._gameContainerElement = gameContainerElement;
-        this._mode = config.mode;
         this._cards = []
         this._boardState = new BoardState();
         this._scoreBoard = new ScoreBoard();
         this._pairCount = config.pairCount || DEFAULT_PAIR_COUNT;
+        this._configMode = config.mode;
+
         this.changeVisibility();
         this._scoreBoard.changeVisibility();
-        console.log(this._mode);
+        this._mainMenuCallback = mainMenuCallback;
+
+        this._endGameMenu = new EndGameMenu(
+            () => this.restartGame(),
+            () => this.returnToMainMenu()
+        );
     }
 
-    async initializeGame() {
+    private createGameMode(mode: GameMode): BaseGameMode {
+        let gameMode;
+        switch(mode) {
+            case GameMode.Normal:
+                gameMode = new NormalModeStrategy(
+                    this._cards,
+                    this._boardState, 
+                    this._scoreBoard,
+                    this._endGameMenu
+                );
+                break;
+            case GameMode.Timed:
+            case GameMode.Hardcore:
+            case GameMode.Endless:
+        }
+        return gameMode!;
+    }
+
+    async initializeGame(config: GameConfig) {
+        this.clearBoard();
         this._cards.push(...await CardGenerator.generateCards(this._pairCount));
+        this._mode = this.createGameMode(config.mode);
+        this._mode.setDisableCardsCallback(() => this.disableCards());
+        this._endGameMenu.hide();
         this.renderCards();
+        this._scoreBoard.resetScore();
+        this._boardState.reset();
     }
 
     private renderCards() {
+        this._gameContainerElement.innerHTML = '';
         this._cards.forEach(card => {
             this._gameContainerElement.appendChild(card.element);
             this.addEventListeners(card)
@@ -39,7 +76,7 @@ export class Game {
     }
 
     private addEventListeners(card: Card) {
-        const handler = () => this.flipCard(card);
+        const handler = () => this._mode.flipCard(card);
         this._cardFlipHandlers.set(card, handler);
         card.element.addEventListener('click', handler);
     }
@@ -52,58 +89,37 @@ export class Game {
         }
     }
 
-    private flipCard(card: Card) {
-        if(card === this._boardState.firstCard || this._boardState.isLocked) return;
-
-        card.flip();
-
-        if(!this._boardState.firstCard) {
-            this._boardState.setFirstCard(card);
-            return;
-        }
-
-        this._boardState.setSecondCard(card);
-        this.checkCardsMatch();
-    }
-
-    private checkCardsMatch() {
-        if(this._boardState.isPair()) {
-           this.handleMatchedCards();
-        } else {
-            this.handleUnmatchedCards();
-        }
-    }
-
-    private handleMatchedCards(): void {
-        this.disableCards();
-        this._boardState.incrementMatchedPairs();
-        this._scoreBoard.incrementScore();
-        if(this._boardState.matchedPairs === this._pairCount) {
-            //Game Completed
-        }
-    }
-
-    private handleUnmatchedCards(): void {
-        this._boardState.changeLockBoard();
-        setTimeout(() => {
-            this._boardState.firstCard!.flip();
-            this._boardState.secondCard!.flip();
-
-            this.resetBoard();
-        }, 1000);
-    }
-
     private disableCards() {
         if(this._boardState.firstCard && this._boardState.secondCard) {
             this.removeCardEventListener(this._boardState.firstCard);
             this.removeCardEventListener(this._boardState.secondCard);
         }
 
-        this.resetBoard();
+        this._boardState.reset();
     }
 
-    private resetBoard() {
+    private async restartGame() {
+        this.clearBoard();
+        await this.initializeGame({ mode: this._configMode, pairCount: this._pairCount });
+        this._endGameMenu.hide();
+        this.show();
+    }
+
+    private returnToMainMenu() {
+        this.clearBoard();
+        this.hide();
+        this._mainMenuCallback();
+        this._scoreBoard.changeVisibility();
+        this._scoreBoard.deleteScoreComponent();
+        this._endGameMenu.clearMenu();
+    }
+
+    private clearBoard() {
+        this._gameContainerElement.innerHTML = '';
+        this._cards = [];
         this._boardState.reset();
+        this._boardState.resetMatchedPairs();
+        this._scoreBoard.resetScore();
     }
 
     private hide() {

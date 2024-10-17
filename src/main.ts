@@ -9,11 +9,14 @@ function main() {
     return;
   }
 
-  const menu = new GameMenu((config: GameConfig) => {
+  const menu = new GameMenu(async (config: GameConfig) => {
     menu.changeVisibility();
-    const game = new Game(gameContainer, config);
+    const game = new Game(gameContainer, config, () => {
+        game.changeVisibility();
+        menu.changeVisibility();
+    });
     game.changeVisibility();
-    game.initializeGame();
+    await game.initializeGame(config);
   });
 
 }

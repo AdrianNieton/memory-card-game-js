@@ -22,6 +22,8 @@ export class BoardState {
         return this._matchedPairs;
     }
 
+    resetMatchedPairs() { this._matchedPairs = 0; }
+
     setFirstCard(card: Card) {
         this._firstCard = card;
     }

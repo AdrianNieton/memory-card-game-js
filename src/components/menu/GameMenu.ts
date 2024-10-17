@@ -145,7 +145,7 @@ export class GameMenu {
 
     changeVisibility(): void {
         this._isVisible = !this._isVisible;
-        this._element.style.display = this._isVisible ? 'block' : 'none';
+        this._element.style.display = this._isVisible ? 'flex' : 'none';
     }
 
     private capitalizeFirstLetter(string: string): string {

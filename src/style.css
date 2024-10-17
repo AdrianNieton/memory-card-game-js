@@ -18,26 +18,26 @@ body {
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.6); /* Fondo blanco con algo de transparencia */
+  background-color: rgba(255, 255, 255, 0.6);
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 h1, h2 {
   text-align: center;
-  color: #e74c3c; /* Color rojo Pokémon */
-  text-shadow: 1px 1px #000; /* Sombra ligera */
-  -webkit-text-stroke: 1px black; /* Borde negro para mejorar la legibilidad */
+  color: #e74c3c;
+  text-shadow: 1px 1px #000;
+  -webkit-text-stroke: 1px black;
   margin-bottom: 1rem;
 }
 
 h1 {
-  font-size: 4rem; /* Aumenta el tamaño del título principal */
+  font-size: 4rem;
 }
 
 h2 {
   font-size: 2.5rem;
-  color: #f39c12; /* Amarillo Pokémon */
+  color: #f39c12;
 }
 
 .mode-list {
@@ -55,36 +55,36 @@ h2 {
 
 .mode-list button {
   font-size: 1.5rem;
-  padding: 0.7rem 2rem; /* Espaciado uniforme */
-  width: 220px; /* Fija el ancho de todos los botones */
+  padding: 0.7rem 2rem;
+  width: 220px;
   border-radius: 10px;
-  border: 2px solid #2c3e50; /* Borde más oscuro */
-  background-color: #ffcc00; /* Color amarillo Pokémon */
-  color: #2c3e50; /* Texto más oscuro para contraste */
+  border: 2px solid #2c3e50;
+  background-color: #ffcc00;
+  color: #2c3e50;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .mode-list button:hover,
 .mode-list button.selected {
-  background-color: #f39c12; /* Cambia a un amarillo más fuerte al pasar el mouse */
+  background-color: #f39c12;
 }
 
 button {
   font-size: 1.5rem;
-  padding: 0.7rem 2rem; /* Espaciado uniforme */
-  width: 220px; /* Fija el ancho de todos los botones */
+  padding: 0.7rem 2rem;
+  width: 220px;
   border-radius: 10px;
-  border: 2px solid #2c3e50; /* Borde más oscuro */
-  background-color: #e74c3c; /* Color amarillo Pokémon */
-  color: antiquewhite; /* Texto más oscuro para contraste */
+  border: 2px solid #2c3e50;
+  background-color: #e74c3c;
+  color: antiquewhite;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #c0392b; /* Fondo más oscuro en hover */
-  color: #ffffff; /* Cambia el texto a blanco en hover */
+  background-color: #c0392b;
+  color: #ffffff;
 }
 
 .score-wrapper {
@@ -102,7 +102,7 @@ p {
 
 #game-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Coloca tantas columnas como quepan, cada una de al menos 200px */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
   width: 60vw;
   margin-right: 10vw;
@@ -173,14 +173,12 @@ img {
   margin-right: 8.5rem;
 }
 
-/* Estilo del label del slider */
 .slider-container label {
   font-size: 1.2rem;
-  color: #2c3e50; /* Texto oscuro */
+  color: #2c3e50;
   font-weight: bold;
 }
 
-/* Estilo del slider */
 .pokemon-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -196,9 +194,9 @@ img {
 .pokemon-slider.pichu::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 40px; /* Ajustar al tamaño de la imagen */
+  width: 40px;
   height: 40px;
-  background: url('/pichu.webp') center/cover no-repeat; /* Imagen por defecto */
+  background: url('/pichu.webp') center/cover no-repeat;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -206,9 +204,9 @@ img {
 .pokemon-slider.pikachu::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 40px; /* Ajustar al tamaño de la imagen */
+  width: 40px;
   height: 40px;
-  background: url('/pikachu.webp') center/cover no-repeat; /* Imagen por defecto */
+  background: url('/pikachu.webp') center/cover no-repeat;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -216,9 +214,9 @@ img {
 .pokemon-slider.raichu::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 40px; /* Ajustar al tamaño de la imagen */
+  width: 40px;
   height: 40px;
-  background: url('/raichu.webp') center/cover no-repeat; /* Imagen por defecto */
+  background: url('/raichu.webp') center/cover no-repeat;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -226,9 +224,9 @@ img {
 .pokemon-slider.mewtwo::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 40px; /* Ajustar al tamaño de la imagen */
+  width: 40px; 
   height: 40px;
-  background: url('/mewtwo.webp') center/cover no-repeat; /* Imagen por defecto */
+  background: url('/mewtwo.webp') center/cover no-repeat;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -241,10 +239,17 @@ img {
   cursor: pointer;
 }
 
-/* Estilo del valor del slider */
 .slider-value {
   font-size: 1.2rem;
   margin-left: 10px;
-  color: #2c3e50; /* Texto oscuro */
+  color: #2c3e50;
   font-weight: bold;
+}
+
+.end-game-menu {
+  display: flex;
+  flex-direction: row;
+  margin: 1em;
+  gap: 5px;
+  justify-content: center;
 }

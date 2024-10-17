@@ -43,12 +43,19 @@ export class ScoreBoard {
         this.updateScore();
     }
 
+    resetScore(): void {
+        this._score = 0;
+        this.updateScore();
+    }
+
     updateScore(): void {
         const scoreElement = this._element.querySelector('#score-value');
         if(scoreElement) {
             scoreElement.textContent = this._score.toString();
         }
     }
+
+    deleteScoreComponent() { this._scoreContainer!.innerHTML = ''; }
 
     private hide() {
         if(this._isVisible) {
